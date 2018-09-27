@@ -13,7 +13,7 @@
 
 ## Module description
 
-This module provides the `translate` function for Puppet. Wrapping a string in this function will mark it to be picked up by gettext and put into the .pot file for translation purposes. Currently, we are **only marking failures, errors, and warnings** in Puppet Supported modules. However, feel free to do what you like with your own. 
+This module provides the `translate` function for Puppet. Wrapping a string in this function will mark it to be picked up by gettext and put into the .pot file for translation purposes. Currently, we are **only marking failures, errors, and warnings** in Puppet Supported modules. Feel free to do what you like with your own. 
 
 ## Setup
 
@@ -25,27 +25,23 @@ puppet module install puppetlabs-translate
 ## Reference
 
 ### Functions
-#### `translate`
+#### `translate` with simple strings
 Takes in a string and passes it to fast_gettext's _() function. Primarily used for 'marking' a string to be added to a .pot file.
 
 ```puppet
 fail(translate("Failure message"))
 ```
 
-## Limitations
-
-We do not yet support string interpolation or pluralization.
+#### `translate` with interpolation
+Takes in a string and a hash. Please note that variables in the message are wrapped with %{VAR} not ${VAR}. The hash contains key value pairs with marker and the variable it will be assigned to. The translate module passes it to fast_gettext's _() function. Primarily used for 'marking' a string to be added to a .pot file.
 
 ```puppet
-# WRONG
-translate("Failure: ${message}")
-
-# WRONG
-translate("There is ${count} failure: ...", "There are ${count} failures: ...", num_failures)
-
-# RIGHT
-translate("Failure: Could not load thing.")
+fail(translate('message is %{color}'), {'color' => 'green'})
 ```
+
+## Limitations
+
+We do not yet support pluralization.
 
 ## Development
 
